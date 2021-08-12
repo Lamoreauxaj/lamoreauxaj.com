@@ -15,6 +15,7 @@ bio: Computer Science and Mathematics major at UT Austin
 email: lamoreauxaj@gmail.com
 ---
 
+<ClientOnly>
 <Resume :frontmatter="$page.frontmatter">
 <template v-slot:left>
 
@@ -151,6 +152,7 @@ Familiar: Haskell, Kotlin, Perl, Assembly, Bash, Pig
 </ProjectCard>
 
 </Resume>
+</ClientOnly>
 
 <style lang="stylus">
 
