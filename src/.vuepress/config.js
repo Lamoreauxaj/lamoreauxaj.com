@@ -11,8 +11,7 @@ module.exports = {
   themeConfig: {
     search: false,
     nav: [],
-    sidebar: {},
-    lastUpdated: 'Last Updated'
+    sidebar: {}
   },
 
   markdown: {

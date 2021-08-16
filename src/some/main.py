@@ -88,6 +88,8 @@ def worse_than_mec(points):
     return to_manim_circle(mec)
 
 EXAMPLE_POINTS = [[-3.5, 0.4, 0], [.5, 1, 0], [3, 0, 0], [2.2, 2, 0], [-1, -1.5, 0], [2.5, -1, 0], [-1.5, .5, 0]]
+EXAMPLE_POINTS2 = [[.5, 1, 0], [2.2, 2, 0], [-1, -1.5, 0], [2.5, -1, 0], [-1.5, .5, 0], [1, 1, 0], [1, -.5, 0], [4, 0, 0]]
+example_points_2 = [GPoint(point[0], point[1]) for point in EXAMPLE_POINTS2]
 
 class Welcome(Scene):
     def construct(self):
@@ -160,6 +162,7 @@ class No_boundary_points(Scene):
         self.add(Dot(hit_point, color=BLUE))
         self.wait(.1)
 
+
 class One_boundary_point(Scene):
     def construct(self):
         points = [Dot(loc) for loc in EXAMPLE_POINTS]
@@ -176,6 +179,7 @@ class One_boundary_point(Scene):
         self.add(Dot(EXAMPLE_POINTS[hit], color=BLUE))
         self.wait(.1)
 
+
 class Two_boundary_points(Scene):
     def construct(self):
         points = [Dot(loc) for loc in EXAMPLE_POINTS]
@@ -189,6 +193,61 @@ class Two_boundary_points(Scene):
         self.play(Transform(circle, smaller_circle, run_time=3))
         self.wait(.1)
 
+
+class Two_boundary_points_to_three(Scene):
+    def construct(self):
+        points = EXAMPLE_POINTS2
+        dots = [Dot(point) for point in points]
+        dots[2] = Dot(points[2], color=BLUE)
+        dots[4] = Dot(points[4], color=BLUE)
+        mec = minimum_enclosing_circle(points)
+        gpoints = [GPoint(point[0], point[1]) for point in points]
+        hit = [2, 4, 7]
+        mid = (gpoints[2] + gpoints[4]) / 2
+        theta = math.atan(.25)
+        center = mid + GPoint(3.1 * math.cos(theta), 3.1 * math.sin(theta))
+        center_dot = Dot([center.x, center.y, 0])
+        circle = Circle(arc_center=[center.x, center.y, 0], radius=(center - gpoints[2]).norm())
+        self.add(*dots)
+        self.add(circle)
+        self.play(Transform(circle, mec, run_time=3))
+        self.remove(dots[7])
+        self.add(Dot(points[7], color=BLUE))
+        self.wait(.1)
+
+
+class Adding_points_from_two_fixed(Scene):
+    def construct(self):
+        points = example_points_2
+        manim_points = [Dot([point.x, point.y, 0]) for point in points]
+        fixed_indices = [2, 4]
+        for idx in fixed_indices:
+            point = points[idx]
+            manim_points[idx] = Dot([point.x, point.y, 0], color=BLUE)
+        circle = minimum_enclosing_circle_helper(points, [points[2], points[4]], k=0)
+        manim_circle = to_manim_circle(circle)
+        for idx in fixed_indices:
+            self.add(manim_points[idx])
+        self.add(manim_circle)
+        prev_idx = None
+        for i in range(len(points)):
+            if i in fixed_indices:
+                continue
+            point = points[i]
+            if not in_circle(point, circle):
+                manim_points[i].set_color(YELLOW)
+                if prev_idx is not None:
+                    manim_points[prev_idx].set_color(WHITE)
+                prev_idx = i
+                self.play(Create(manim_points[i]))
+                circle = minimum_enclosing_circle_helper(points, [points[2], points[4]], k=i + 1)
+                next_manim_circle = to_manim_circle(circle)
+                self.play(Transform(manim_circle, next_manim_circle))
+                self.add(next_manim_circle)
+                self.remove(manim_circle)
+                manim_circle = next_manim_circle
+            else:
+                self.play(Create(manim_points[i]))
 
 
 class Justification(Scene):

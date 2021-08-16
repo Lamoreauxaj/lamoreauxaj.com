@@ -11,7 +11,7 @@ Welcome to my submission to the Summer of Math Exploration 1. I want to share wi
 
 I'm sharing this because I believe the algorithm is particularly nice and elegant. But also believe it hightlights some great problem solving principles needed to discover it.
 
-## Problem Statement
+## Problem statement
 
 The problem statement is as follows:
 
@@ -33,7 +33,7 @@ But also if you're reading this, hopefully you would care about the problem sole
 
 Maybe if you've seen some computational geometry before, you have ideas of how to start. If you've never seen the problem before, I highly encourage you to take a few minutes to mess around and see if you can come up with any ideas before reading ahead.
 
-## Initial Observations
+## Initial observations
 
 Even though it may not be obvious how to solve this, a good problem solving strategy is to try to note any observations we can find in our initial investigation.
 
@@ -55,13 +55,13 @@ So now we can conclude that there must be at least two points on the boundary of
 
 For example, in the example we have been using, we can see that after doing this, the circle now has the two fixed points on the diameter of the circle.
 
-![Figure. Shrinking circle until two points are on boundary.](./media/videos/main/1080p60/Two_boundary_points.mp4)
+![Figure. Shrinking circle until two points are on diameter of circl.](./media/videos/main/1080p60/Two_boundary_points.mp4)
 
 The other case can be seen in the following example, where the circle ends up with three points on the boundary of the circle.
 
-TODO: example
+![Figure. Shrinking circle until three points are on boundary.](./media/videos/main/1080p60/Two_boundary_points_to_three.mp4)
 
-## Naive Algorithm
+### Naive algorithm
 
 Thus far, we have concluded if the minimum enclosing circle has two points on the boundary, they are on the diameter of the circle. Otherwise there must be at least three points on the boundary of the circle. If there are more than three points, note that it only takes exactly three points to determine a circle. Thus if we are interested in trying all possible circles, we only need to worry about trying sets of at most $3$ points.
 
@@ -70,6 +70,30 @@ This gives us an algorithm: if we try all sets of $2$ to $3$ points and determin
 Note, the notation $O(f(n))$ indicates that the runtime of the algorithm grows at most as fast as $f(n)$ grows. Thus when we say the algorithm is $O(n^4)$, it means it grows no faster than $n^4$, i.e. if we double the input, the runtime should at most be $16$ times larger. And we also assume this asymptotically, i.e. as $n$ goes to infinity this holds.
 
 For this problem, we would hope we can get something much closer to $O(n)$. And in fact as we will see Welzl's algorithm does end up running in expected $O(n)$ time.
+
+## Wishful thinking
+
+A good problem solving strategy when you don't know what to do is to simplify the problem by assuming you already know something you don't. Using this wishful thinking, you may discover realizations from solving a simpler version which will guide you to a full solution.
+
+For this problem, what if a little birdie already told you two of the points that would be on the boundary of the circle? How would you then find the minimum enclosing circle given this fact?
+
+If you want, now is probably a good time to try thinking about this idea on your own if you desire before we proceed.
+
+The smallest possible circle we could have is the one with the two fixed points on the boundary. We could keep track of the minimum enclosing circle of a increasing set of points. Say we call this set $S$ and it only contains the two fixed points at the start. And we can also keep track of the minimum enclosing circle of $S$. If we can keep this invariant (a property that doesn't change as we progress) as we add points to $S$, then we will end up with our answer at the end.
+
+At the start, clearly we can compute the minimum enclosing circle of just two points. If we consider a point not in $S$, either it's within the current minimum enclosing circle or it's not. If it's within the circle, then the circle doesn't change and we can keep this invariant.
+
+However if a point is not within the circle, then we can conclude that the point must actually be on the boundary of the minimum enclosing circle for $S$. Thus at this point, we know three points that must be on the boundary of the circle. Therefore we can conclude that we in fact know the entire circle. However it's important to note it may not still enclose all points in $S$, in which case there cannot exist a circle which encloses all of $S$ while having these two fixed points.
+
+We can continue this process for each point. If we run into a case where we cannot enclose all points we stop and conclue there is no minimum enclosing circle. If we already have three points on the boundary and have a fourth point outside the circle, we use the original two fixed points along with the additional point. We no longer assume the previous point we added is on the boundary of the minimum enclosing circle.
+
+The following animation shows this process on an example set of points.
+
+![Figure. Finding minimum enclosing circle given two fixed points.](./media/videos/main/1080p60/Adding_points_from_two_fixed.mp4)
+
+Now you may also wonder what the runtime of this algorithm is, but we will actually proceed and address that after we extend it to the full algorithm.
+
+### One fixed point
 
 <style lang="stylus">
 img
