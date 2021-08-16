@@ -7,7 +7,7 @@ sidebar: auto
 
 ## Introduction
 
-Welcome to my submission to the Summer of Math Exploration 1. I want to share with you one of my favorite algorithms, Welzl's minimum enclosing circle algorithm.
+Welcome to my submission to the Summer of Math Exposition 1. I want to share with you one of my favorite algorithms, Welzl's minimum enclosing circle algorithm.
 
 I'm sharing this because I believe the algorithm is particularly nice and elegant. But also believe it hightlights some great problem solving principles needed to discover it.
 
