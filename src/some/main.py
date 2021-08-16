@@ -42,6 +42,8 @@ def from_manim_points(points):
     return [GPoint(point[0], point[1]) for point in points]
 
 def to_manim_circle(circle):
+    if circle is None:
+        return None
     return Circle(arc_center=[circle.center.x, circle.center.y, 0], radius=circle.radius)
 
 def circle(points):
@@ -216,38 +218,151 @@ class Two_boundary_points_to_three(Scene):
         self.wait(.1)
 
 
+# Assume that all points up to k are already drawn. We remove them and proceed.
+def animate_from_two_fixed(scene, points, manim_points, fixed_indices, k, run_time=1):
+    remove_anims = []
+    for i in range(k):
+        if i not in fixed_indices:
+            manim_points[i].set_color(WHITE)
+            remove_anims.append(Uncreate(manim_points[i], run_time=run_time))
+    if len(remove_anims) > 0:
+        scene.play(*remove_anims)
+    circle = minimum_enclosing_circle_helper(points, [points[i] for i in fixed_indices], k=0)
+    manim_circle = to_manim_circle(circle)
+    scene.play(Create(manim_circle, run_time=run_time))
+    prev_idx = None
+    for i in range(k):
+        if i in fixed_indices:
+            continue
+        point = points[i]
+        manim_points[i] = Dot([points[i].x, points[i].y, 0])
+        if not in_circle(point, circle):
+            manim_points[i].set_color(YELLOW)
+            if prev_idx is not None:
+                manim_points[prev_idx].set_color(WHITE)
+            prev_idx = i
+            scene.play(Create(manim_points[i], run_time=run_time))
+            circle = minimum_enclosing_circle_helper(points, [points[i] for i in fixed_indices], k=i+1)
+            next_manim_circle = to_manim_circle(circle)
+            scene.play(Transform(manim_circle, next_manim_circle, run_time=run_time))
+            scene.add(next_manim_circle)
+            scene.remove(manim_circle)
+            manim_circle = next_manim_circle
+        else:
+            scene.play(Create(manim_points[i], run_time=run_time))
+    return manim_circle
+
+
+def animate_from_one_fixed(scene, points, manim_points, fixed_indices, k, run_time=1):
+    remove_anims = []
+    for i in range(k):
+        if i not in fixed_indices:
+            manim_points[i].set_color(WHITE)
+            remove_anims.append(Uncreate(manim_points[i], run_time=run_time))
+    if len(remove_anims) > 0:
+        scene.play(*remove_anims)
+    circle = minimum_enclosing_circle_helper(points, [points[i] for i in fixed_indices], k=0)
+    manim_circle = to_manim_circle(circle)
+    scene.play(Create(manim_circle, run_time=run_time))
+    prev_idx = None
+    for i in range(k):
+        if i in fixed_indices:
+            continue
+        point = points[i]
+        manim_points[i] = Dot([points[i].x, points[i].y, 0])
+        if not in_circle(point, circle):
+            manim_points[i].set_color(YELLOW)
+            if prev_idx is not None:
+                manim_points[prev_idx].set_color(WHITE)
+            prev_idx = i
+            scene.play(Create(manim_points[i], run_time=run_time))
+            scene.play(Uncreate(manim_circle, run_time=run_time))
+            circle = minimum_enclosing_circle_helper(points, [points[i] for i in fixed_indices], k=i+1)
+            manim_points[i].set_color(BLUE)
+            manim_circle = animate_from_two_fixed(scene, points, manim_points, fixed_indices + [i], k=i+1, run_time=run_time / 2)
+            manim_points[i].set_color(YELLOW)
+        else:
+            scene.play(Create(manim_points[i], run_time=run_time))
+    return manim_circle
+
+
+def animate_from_zero_fixed(scene, points, manim_points, fixed_indices, k, run_time=1):
+    remove_anims = []
+    for i in range(k):
+        if i not in fixed_indices:
+            manim_points[i].set_color(WHITE)
+            remove_anims.append(Uncreate(manim_points[i], run_time=run_time))
+    if len(remove_anims) > 0:
+        scene.play(*remove_anims)
+    circle = minimum_enclosing_circle_helper(points, [], k=1)
+    manim_points[0] = Dot([points[0].x, points[0].y, 0])
+    manim_points[0].set_color(YELLOW)
+    scene.play(Create(manim_points[0], run_time=run_time))
+    manim_circle = to_manim_circle(circle)
+    if manim_circle is not None:
+        scene.play(Create(manim_circle, run_time=run_time))
+    prev_idx = 0
+    for i in range(1, k):
+        if i in fixed_indices:
+            continue
+        point = points[i]
+        manim_points[i] = Dot([points[i].x, points[i].y, 0])
+        if not in_circle(point, circle):
+            manim_points[i].set_color(YELLOW)
+            if prev_idx is not None:
+                manim_points[prev_idx].set_color(WHITE)
+            prev_idx = i
+            scene.play(Create(manim_points[i], run_time=run_time))
+            if manim_circle is not None:
+                scene.play(Uncreate(manim_circle, run_time=run_time))
+            circle = minimum_enclosing_circle_helper(points, [points[i] for i in fixed_indices], k=i+1)
+            manim_points[i].set_color(BLUE)
+            manim_circle = animate_from_one_fixed(scene, points, manim_points, fixed_indices + [i], k=i+1, run_time=run_time / 2)
+            manim_points[i].set_color(YELLOW)
+        else:
+            scene.play(Create(manim_points[i], run_time=run_time))
+    scene.wait(.1)
+
+
 class Adding_points_from_two_fixed(Scene):
     def construct(self):
         points = example_points_2
         manim_points = [Dot([point.x, point.y, 0]) for point in points]
         fixed_indices = [2, 4]
+        fixed_anims = []
         for idx in fixed_indices:
             point = points[idx]
             manim_points[idx] = Dot([point.x, point.y, 0], color=BLUE)
-        circle = minimum_enclosing_circle_helper(points, [points[2], points[4]], k=0)
-        manim_circle = to_manim_circle(circle)
+            fixed_anims.append(Create(manim_points[idx]))
+        self.play(*fixed_anims)
+        self.play(*[Create(point) for i, point in enumerate(manim_points) if i not in fixed_indices])
+        animate_from_two_fixed(self, points, manim_points, fixed_indices, k=len(points))
+
+
+class Adding_points_from_one_fixed(Scene):
+    def construct(self):
+        points = example_points_2
+        manim_points = [Dot([point.x, point.y, 0]) for point in points]
+        fixed_indices = [2]
+        fixed_anims = []
         for idx in fixed_indices:
-            self.add(manim_points[idx])
-        self.add(manim_circle)
-        prev_idx = None
-        for i in range(len(points)):
-            if i in fixed_indices:
-                continue
-            point = points[i]
-            if not in_circle(point, circle):
-                manim_points[i].set_color(YELLOW)
-                if prev_idx is not None:
-                    manim_points[prev_idx].set_color(WHITE)
-                prev_idx = i
-                self.play(Create(manim_points[i]))
-                circle = minimum_enclosing_circle_helper(points, [points[2], points[4]], k=i + 1)
-                next_manim_circle = to_manim_circle(circle)
-                self.play(Transform(manim_circle, next_manim_circle))
-                self.add(next_manim_circle)
-                self.remove(manim_circle)
-                manim_circle = next_manim_circle
-            else:
-                self.play(Create(manim_points[i]))
+            point = points[idx]
+            manim_points[idx] = Dot([point.x, point.y, 0], color=BLUE)
+            fixed_anims.append(Create(manim_points[idx]))
+        self.play(*fixed_anims)
+        self.play(*[Create(point) for i, point in enumerate(manim_points) if i not in fixed_indices])
+        animate_from_one_fixed(self, points, manim_points, fixed_indices, k=len(points))
+        self.wait(.1)
+
+
+class Adding_points_from_zero_fixed(Scene):
+    def construct(self):
+        points = example_points_2
+        manim_points = [Dot([point.x, point.y, 0]) for point in points]
+        fixed_indices = []
+        self.play(*[Create(point) for point in manim_points])
+        animate_from_zero_fixed(self, points, manim_points, fixed_indices, k=len(points))
+        self.wait(.1)
 
 
 class Justification(Scene):

@@ -3,13 +3,11 @@ navbar: false
 sidebar: auto
 ---
 
-# Welzl's Minimum Enclosing Circle Algorithm
+# Welzl's Minimum Enclosing Circle Algorithm (Summer of Math Exposition)
 
 ## Introduction
 
-Welcome to my submission to the Summer of Math Exposition 1. I want to share with you one of my favorite algorithms, Welzl's minimum enclosing circle algorithm.
-
-I'm sharing this because I believe the algorithm is particularly nice and elegant. But also believe it hightlights some great problem solving principles needed to discover it.
+One of my favorite algorithms is Welzl's minimum enclosing circle algorithm. I want to share this not only because it is elegant, but also because it highlights some great problem solving principles needed to discover it.
 
 ## Problem statement
 
@@ -23,21 +21,21 @@ For example, this is the minimum enclosing circle for the following set of point
 
 ### Why does this matter?
 
-You may ask, what might you care about this problem?
+Here are a few examples where this algorithm could be useful:
 
-What if you wanted to build a hospital and minimize the maximum distance to residents of a community. The minimum enclosing circle would give you a reasonable place to build such a hospital.
-
-Perhaps you want to approximate if a point is close to any point in some set. You could first compare against the minimum enclosing circle instead of comparing points individually. Or perhaps you want to approximate the maximum distance between two points in a set. In this case, the diameter of the minimum enclosing circle would be a good approximation.
+- Let's say you wanted to build a hospital and minimize the maximum distance to residents of a community; the minimum enclosing circle would give you a reasonable place to build such a hospital.
+- Perhaps you want to approximate whether a point is close to any other point in a set. Naively, you could compare it to the other points in the set, however, a good approximation would be to first compare the distance to the minimum enclosing circle.
+- Perhaps you want to approximate the maximum distance between two points in a set. In this case, the diameter of the minimum enclosing circle would be a good approximation.
 
 But also if you're reading this, hopefully you would care about the problem solely for the interesting algorithm.
 
-Maybe if you've seen some computational geometry before, you have ideas of how to start. If you've never seen the problem before, I highly encourage you to take a few minutes to mess around and see if you can come up with any ideas before reading ahead.
+Maybe you have some ideas of how to start. I highly encourage you to take some time to mess around and see if you can come up with any ideas before reading ahead.
 
 ## Initial observations
 
 Even though it may not be obvious how to solve this, a good problem solving strategy is to try to note any observations we can find in our initial investigation.
 
-Perhaps you ask yourself:
+Perhaps after examining some examples, you ask yourself:
 
 > How many points are on the boundary of the minimum enclosing circle?
 
@@ -47,7 +45,7 @@ Well we can first observe: if there were $0$ points on the boundary, then the ci
 
 Since this would always result in a smaller circle as we can see above, this means that no minimum enclosing circle could have $0$ points on the boundary of the circle.
 
-What if there was exactly one point on the boundary of the circle. Then we could shrink the circle around the single point as the origin until there is another point on the boundary of the circle.
+What if there were exactly one point on the boundary of the circle. Then we could shrink the circle around the single point as the origin until there is another point on the boundary of the circle.
 
 ![Figure. Shrinking circle until two points are on boundary.](./media/videos/main/1080p60/One_boundary_point.mp4)
 
@@ -71,21 +69,21 @@ Note, the notation $O(f(n))$ indicates that the runtime of the algorithm grows a
 
 For this problem, we would hope we can get something much closer to $O(n)$. And in fact as we will see Welzl's algorithm does end up running in expected $O(n)$ time.
 
-## Wishful thinking
+## The algorithm
 
-A good problem solving strategy when you don't know what to do is to simplify the problem by assuming you already know something you don't. Using this wishful thinking, you may discover realizations from solving a simpler version which will guide you to a full solution.
+### Wishful thinking
 
-For this problem, what if a little birdie already told you two of the points that would be on the boundary of the circle? How would you then find the minimum enclosing circle given this fact?
+A good problem solving strategy when you don't know what to do is to simplify the problem by assuming you already know something you don't. For this problem, what if a little birdie already told you two of the points that would be on the boundary of the circle? How would you then find the minimum enclosing circle given this fact?
 
-If you want, now is probably a good time to try thinking about this idea on your own if you desire before we proceed.
+The idea is that we will keep track of a set of points and the current minimum enclosing circle for the set. At the start the set contains only the two fixed points and we know how to compute the smallest enclosing circle for this set. If we can keep this invariant (a property that doesn't change as we progress) as we add points then we will end up with the answer once the set contains all points.
 
-The smallest possible circle we could have is the one with the two fixed points on the boundary. We could keep track of the minimum enclosing circle of a increasing set of points. Say we call this set $S$ and it only contains the two fixed points at the start. And we can also keep track of the minimum enclosing circle of $S$. If we can keep this invariant (a property that doesn't change as we progress) as we add points to $S$, then we will end up with our answer at the end.
+We can consider a point not in the current set and whether it's within the current minimum enclosing circle or not. If it's within the circle, then the circle remains the same and we add the point to the set.
 
-At the start, clearly we can compute the minimum enclosing circle of just two points. If we consider a point not in $S$, either it's within the current minimum enclosing circle or it's not. If it's within the circle, then the circle doesn't change and we can keep this invariant.
+However if a point is not within the circle, then we can conclude that the point must actually be on the boundary of the minimum enclosing circle for the current set (since if it wasn't, it would've been in the current circle).
 
-However if a point is not within the circle, then we can conclude that the point must actually be on the boundary of the minimum enclosing circle for $S$. Thus at this point, we know three points that must be on the boundary of the circle. Therefore we can conclude that we in fact know the entire circle. However it's important to note it may not still enclose all points in $S$, in which case there cannot exist a circle which encloses all of $S$ while having these two fixed points.
+Thus at this point, we know three points that must be on the boundary of the circle. Therefore we can conclude that we in fact know the entire circle. Note the circle may not still enclose all points in the set, in which case there cannot exist any enclosing circle for this set, in which case the algorithm stops.
 
-We can continue this process for each point. If we run into a case where we cannot enclose all points we stop and conclue there is no minimum enclosing circle. If we already have three points on the boundary and have a fourth point outside the circle, we use the original two fixed points along with the additional point. We no longer assume the previous point we added is on the boundary of the minimum enclosing circle.
+We can continue this process for each point. If we already have three points on the boundary and have a fourth point outside the circle, we use the original two fixed points along with the additional point. We no longer assume the previous point we added is on the boundary of the minimum enclosing circle.
 
 The following animation shows this process on an example set of points.
 
@@ -94,6 +92,22 @@ The following animation shows this process on an example set of points.
 Now you may also wonder what the runtime of this algorithm is, but we will actually proceed and address that after we extend it to the full algorithm.
 
 ### One fixed point
+
+The natural question to ask would be how to do this if you know less than two of the points which must be on the boundary. Optimally we would assume we know none of them, but what if we assumed that we know one point that must be on the boundary of the circle.
+
+Similarly to when we assumed we know two points, whenever we encounter a point not within the current circle, we can assume we know that this point and the fixed point are on the boundary of the circle. However that isn't enough to determine the circle, but recall we have a routine to take two fixed points, and compute the minimum enclosing circle. Thus we can use the routine described above and now we can have the minimum enclosing circle of the set of points so far. If at any point, we conclude there does not exist any minimum enclosing circle, we can stop the algorithm.
+
+We continue this process until we have the minimum enclosing circle of all the points given that one fixed point must be on the boundary. The following animation visualizes this routine.
+
+![Figure. Finding minimum enclosing circle given two fixed points.](./media/videos/main/1080p60/Adding_points_from_one_fixed.mp4)
+
+### The final routine
+
+You probably can see where this is going, but can we just mirror the previous routine and assume we know zero points on the boundary of the circle?
+
+If we add a point which is not within the current circle, we can use the previous routine in order to conclude the entire minimum enclosing circle for our current set of points. Thus by the end of this routine, we know we have the minimum enclosing circle for all points. The following is an animation of this routine.
+
+![Figure. Finding minimum enclosing circle on all points.](./media/videos/main/1080p60/Adding_points_from_zero_fixed.mp4)
 
 <style lang="stylus">
 img
