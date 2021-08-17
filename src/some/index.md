@@ -109,6 +109,43 @@ If we add a point which is not within the current circle, we can use the previou
 
 ![Figure. Finding minimum enclosing circle on all points.](./media/videos/main/1080p60/Adding_points_from_zero_fixed.mp4)
 
+## Runtime
+
+Now you've actually seen the entire algorithm. However what would you say the runtime of this algorithm is? A simple analysis would seem to suggest that we may have to run the recursive routine given an additional fixed point every time that we add a point. This would mean that the runtime given two fixed points would be $O(n^2)$, given one fixed point would be $O(n^3)$, and the total runtime would be $O(n^4)$. This is no better than the naive algorithm.
+
+However I claim that if you shuffle the points randomly, then on average this algorithm runs in $O(n)$ time. Let's consider the case where we have two fixed points. We want to know the total amount of work done which is $O(n)$ times the number of times we have to recompute the circle. However if we take the points in a random order, how often does this happen? It's probably not obvious, however if we take a different perspective and consider that we are removing the points it becomes clearer.
+
+Everytime you remove a point, the probability that you shrink the circle is only if you remove a point which is on the boundary of the circle. This is $\frac{3}{n}$ points. Therefore the expected number of times the circle shrinks is expected $O(1 / n)$. Since every time you expand the circle, you have to do $O(n)$ work, the total runtime ends up being $O(n)$.
+
+The same logic applies for when we have one fixed point, we only expect the circle to expand on average $O(1 / n)$ times and therefore the total work done is $O(n)$. You can probably see that when we have no fixed points, the total runtime ends up being $O(n)$.
+
+So just by randomizing the order we process the points in, suddenly our worst case runtime actually beceomes very unlikely since it's rare adding a point will expand the circle. Thus not only is this algorithm correct, it is very efficient.
+
+## Implementation
+
+If you are curious on what the implementation of this algorithm would look like, hopefully the following code gives you an idea. As we look over the points, we check if they are not in the circle and run the routine with one more fixed point on the current set of points. We keep track of the set of points, by just running the routine over a prefix of the array `points` which is controled by `current_prefix_len`.
+
+```python
+def mec(points, fixed_points, current_prefix_len):
+    # compute starting circle
+    current_circle = circle_from_fixed_points(fixed_points)
+    for i in range(current_prefix_len):
+        # check if new point is not in circle
+        if not points[i] in fixed_points:
+            if not point_in_circle(points[i], current_circle):
+                if len(fixed) == 3: # no circle exists
+                    return None
+                # update circle by running with one more fixed point
+                current_circle = mec(points, fixed_points + [points[i]], i + 1)
+                if current_circle is None: # no circle exists
+                    break
+    return current_circle
+```
+
+## Conclusion
+
+That's the entire algorithm. I hope you feel that you could have discovered this algorithm. It's a great example of what wishful thinking and just investigating the results can do.
+
 <style lang="stylus">
 img
     border-radius: 6px
