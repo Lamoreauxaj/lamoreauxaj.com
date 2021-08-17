@@ -123,7 +123,7 @@ So just by randomizing the order we process the points in, suddenly our worst ca
 
 ## Implementation
 
-If you are curious on what the implementation of this algorithm would look like, hopefully the following code gives you an idea. As we look over the points, we check if they are not in the circle and run the routine with one more fixed point on the current set of points. We keep track of the set of points, by just running the routine over a prefix of the array `points` which is controled by `current_prefix_len`.
+If you are curious on what the implementation of this algorithm would look like, hopefully the following code gives you an idea. As we loop over the points, we check if they are not in the circle and run the routine with one more fixed point on the current set of points. We keep track of the set of points, by just running the routine over a prefix of the array `points` which is controled by `current_prefix_len`.
 
 ```python
 def mec(points, fixed_points, current_prefix_len):
