@@ -115,9 +115,9 @@ Now you've actually seen the entire algorithm. However what would you say the ru
 
 However I claim that if you shuffle the points randomly, then on average this algorithm runs in $O(n)$ time. Let's consider the case where we have two fixed points. We want to know the total amount of work done which is $O(n)$ times the number of times we have to recompute the circle. However if we take the points in a random order, how often does this happen? It's probably not obvious, however if we take a different perspective and consider that we are removing the points it becomes clearer.
 
-Everytime you remove a point, the probability that you shrink the circle is only if you remove a point which is on the boundary of the circle. This is $\frac{3}{n}$ points. Therefore the expected number of times the circle shrinks is expected $O(1 / n)$. Since every time you expand the circle, you have to do $O(n)$ work, the total runtime ends up being $O(n)$.
+Everytime you remove a point, the probability that you shrink the circle is only if you remove a point which is on the boundary of the circle. This is $\frac{3}{n}$ points. Therefore the expected number of times the circle shrinks is expected $O(1)$ which is the same as the number of times the circle would have expanded in our algorithm. Since every time you expand the circle, you have to do $O(n)$ work, the total runtime ends up being $O(n)$.
 
-The same logic applies for when we have one fixed point, we only expect the circle to expand on average $O(1 / n)$ times and therefore the total work done is $O(n)$. You can probably see that when we have no fixed points, the total runtime ends up being $O(n)$.
+The same logic applies for when we have one fixed point, we only expect the circle to expand on average $O(1)$ times and therefore the total work done is $O(n)$. You can probably see that when we have no fixed points, the total runtime ends up being $O(n)$.
 
 So just by randomizing the order we process the points in, suddenly our worst case runtime actually beceomes very unlikely since it's rare adding a point will expand the circle. Thus not only is this algorithm correct, it is very efficient.
 
