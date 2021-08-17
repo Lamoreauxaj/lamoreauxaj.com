@@ -131,14 +131,13 @@ def mec(points, fixed_points, current_prefix_len):
     current_circle = circle_from_fixed_points(fixed_points)
     for i in range(current_prefix_len):
         # check if new point is not in circle
-        if not points[i] in fixed_points:
-            if not point_in_circle(points[i], current_circle):
-                if len(fixed) == 3: # no circle exists
-                    return None
-                # update circle by running with one more fixed point
-                current_circle = mec(points, fixed_points + [points[i]], i + 1)
-                if current_circle is None: # no circle exists
-                    break
+        if not point_in_circle(points[i], current_circle):
+            if len(fixed_points) == 3: # no circle exists
+                return None
+            # update circle by running with one more fixed point
+            current_circle = mec(points, fixed_points + [points[i]], i + 1)
+            if current_circle is None: # no circle exists
+                break
     return current_circle
 ```
 
