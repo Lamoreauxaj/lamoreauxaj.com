@@ -1,0 +1,136 @@
+---
+name: Aaron Lamoreaux
+
+socials:
+  - icon: /icons/github.svg
+    content: lamoreauxaj
+  - icon: /icons/email.png
+    content: lamoreauxaj@gmail.com
+  - icon: /icons/web.png
+    content: lamoreauxaj.com
+left:
+  - education
+  - skills
+  - awards
+  - teaching
+right:
+  - work
+  - projects
+sections:
+  education:
+    type: project
+    title: Education
+    content:
+      - title: B.S. Computer Science & Math
+        location: UT Austin
+        date: Aug 2019-Dec 2022
+        description: |
+          **4.0 GPA**. Turing Scholar. Participant in programming and cybersecurity contests. Working on quantum algorithm project with Dr. Scott Aaronson.
+
+          **Coursework:**
+          - Operating Systems (Honors)
+          - Algorithms (H)
+          - Sublinear Algorithms (Graduate)
+          - Quantum Complexity Theory (G)
+          - Automated Logical Reasoning (G)
+          - Real Analysis II
+          - Abstract Algebra
+  languages:
+    type: single
+    title: Languages
+    content: |
+      - English
+      - Mandarin (intermediate)
+  teaching:
+    type: single
+    title: Teaching Experience
+    content: |
+      - Alphastar USACO Silver instructor
+      - Algorithms TA
+      - Private USACO tutoring
+      - Competitive Programming TA
+  skills:
+    type: single
+    title: Skills
+    content: |
+      **Proficient**: Java, C, C++, Python, JavaScript, OCaml, LaTeX, React, Git
+
+      **Familiar**: Haskell, Kotlin, Assembly, Bash, SQL
+  awards:
+    type: single
+    title: Awards
+    content: |
+      - ICPC World Finalist
+      - Top 500 Putnam
+      - USACO Finalist
+      - USAJMO Qualifier
+      - UIL CS State Champions
+      - Codeforces Division 1 (2271)
+      - HackDFW Finalist
+      - HackTX Finalist
+      - Mathworks Math Modeling HM
+      - UT Distinguished College Scholar
+  work:
+    type: project
+    title: Work Experience
+    content:
+      - title: Software Engineering Intern
+        location: Jane Street
+        date: Jun 2021-Aug 2021
+        description: |
+          - Added new indexers for webpages and Google Drive to internal search engine. Implemented Pagerank to improve search results.
+          - Implemented and deployed an authenticated API proxy in order to communicate with many cryptocurrency exchanges.
+          - Created library to interact with cryptocurrency SQL tables.
+          - Designed algorithm for balancing cryptocurrency inventory across exchanges.
+      - title: Research Assistant
+        location: UT Austin
+        date: Feb 2020-Nov 2020
+        description: |
+          - Implemented program synthesis tool, WebQA, for extracting information from heterogenous webpages.
+          - Created DSL including neural and programmatic constructs.
+          - Benchmarked against 25 different tasks across domains.
+          - Published in PLDI 2021.
+      - title: Software Engineering Intern
+        location: Department of Defense
+        date: Jun 2019-Aug 2019
+        description: |
+          - Held Top Secret/SI/TK security clearance.
+          - Used Pig and Python to write analytics on large data sets.
+          - Created Jupyter notebooks used by other teams for discovery with cyber-security data sources.
+      - title: Software Engineering Intern
+        location: State Farm
+        date: Jun 2018-Jul 2018
+        description: |
+          - Built automatic testing tools for insurance policy software using Node.js mock data generation frameworks.
+          - Designed React.js web app used to visualize and log tests for internal projects.
+      - title: Software Engineering Intern
+        location: State Farm
+        date: Jun 2017-Jul 2017
+        description: |
+          - Automated update system for internal Apple products.
+          - Automated system for data transfers in migration effort.
+          - Created Ember.js pages to manipulate databases for integration testing workflows.
+  projects:
+    type: project
+    title: Projects
+    content:
+      - title: Quantum Streaming Algorithms
+        location: CS395T
+        date: Jan 2021-May 2021
+        description: |
+          - Covers literature on quantum streaming algorithms for Quantum Complexity Theory course.
+          - Proved a better lower bound and gave a quantum algorithm which exceeds classical for 3rd moments.
+      - title: Applying Peelable Hypergraph Constructions to Sparse Recovery
+        location: CS395T
+        date: Aug 2020-Dec 2020
+        description: |
+          - Independent research project for Sublinear Algorithms course.
+          - Investigated how to get improved constants for sparse recovery algorithms from peelability results.
+
+      - title: Experimental Geometer
+        location: HackTX
+        date: Feb 2019-May 2020
+        description: |
+          - Built a VR application which would render dynamic geometric diagrams that could be manipulated dynamically.
+          - Wrote interpreter for geometric domain specific language which supported hot reloading.
+          - Continued to develop C++ compiler for scripting language.

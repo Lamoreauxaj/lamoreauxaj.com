@@ -10,16 +10,26 @@ module.exports = {
 
   themeConfig: {
     search: false,
-    nav: [],
+    nav: [
+    ],
     sidebar: {}
   },
 
   markdown: {
     anchor: { permalink: false },
     extendMarkdown: md => {
-      md.use(require('markdown-it-katex'))
-      md.use(require('markdown-it-figure'))
-      md.use(require('markdown-it-html5-embed'), { html5embed: { useImageSyntax: true, useLinkSyntax: true } })
+      md.use(require('markdown-it-katex'));
+      md.use(require('markdown-it-figure'));
+      md.use(require('markdown-it-html5-embed'), { html5embed: { useImageSyntax: true, useLinkSyntax: true } });
     }
+  },
+
+  chainWebpack (config, isServer) {
+    config.module.rule('yaml')
+      .test(/\.ya?ml$/)
+      .type('json')
+      .use('yaml-loader')
+      .loader('yaml-loader')
+      .end();
   }
-}
+};

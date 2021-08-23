@@ -12,14 +12,17 @@
   "devDependencies": {
     "html2canvas": "^1.2.2",
     "jspdf": "^2.3.1",
-    "vuepress": "^1.0.4"
+    "yaml-loader": "^0.6.0"
   },
   "dependencies": {
     "animejs": "^3.2.1",
-    "markdown-it": "^8.4.1",
+    "markdown-it": "^12",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-figure": "^0.2.0",
     "markdown-it-html5-embed": "^1.0.0",
-    "markdown-it-katex": "^2.0.3"
+    "markdown-it-katex": "^2.0.3",
+    "sass": "^1.38.0",
+    "sass-loader": "^10",
+    "vuepress": "^1.8.2"
   }
 }
