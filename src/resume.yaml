@@ -25,14 +25,16 @@ sections:
         location: UT Austin
         date: Aug 2019-Dec 2022
         description: |
-          **4.0 GPA**. Turing Scholar. Participant in programming and cybersecurity contests. Working on quantum algorithm project with Dr. Scott Aaronson.
+          **4.0 GPA**. Turing Scholar. Participant in programming and cybersecurity contests.
 
           **Coursework:**
           - Operating Systems (Honors)
           - Algorithms (H)
           - Sublinear Algorithms (Graduate)
+          - Cryptography (G)
           - Quantum Complexity Theory (G)
           - Automated Logical Reasoning (G)
+          - Theory of Probability (G)
           - Real Analysis II
           - Abstract Algebra
   languages:
