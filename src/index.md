@@ -20,9 +20,8 @@ footer: Made with ♥ by Aaron. Powered by VuePress
 
 <AboutCard :frontmatter="$page.frontmatter" >
 
-Future software engineer actively recruiting for summer 2022 internships. Current classes
-at UT Austin include Cryptography and Artificial Intelligence. Working on
-independent research project with a professor.
+Future software engineer intern in Hong Kong, graduating in Dec 2022. Current classes
+at UT Austin include Natural Language Processing, Computer Graphics, and Chinese.
 
 </AboutCard>
 
