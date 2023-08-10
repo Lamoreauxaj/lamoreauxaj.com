@@ -12,16 +12,12 @@ socials:
   link: https://www.linkedin.com/in/aaron-l-b8b3a6124/
 - title: email
   link: 'mailto:lamoreauxaj[at]gmail.com'
-actions:
-- text: CV
-  link: /cv.pdf
 footer: Made with ♥ by Aaron. Powered by VuePress
 ---
 
 <AboutCard :frontmatter="$page.frontmatter" >
 
-Future software engineer intern in Hong Kong, graduating in Dec 2022. Current classes
-at UT Austin include Natural Language Processing, Computer Graphics, and Chinese.
+Software engineer in NYC
 
 </AboutCard>
 
